@@ -1,0 +1,22 @@
+let k = 14;
+let m = 0.42;
+let x = Math. sqrt(Math.pow(k + 6.1, 3));
+let y = Math. log(Math.pow(k, 4)) + Math.log10(Math.pow(m, -6));
+let fraction = Math.pow((x * x) / 0.13, -1);
+let phi = Math.acos(fraction) + Math. 10g(Math.abs(Math.pow(y, -1)));
+console. log ("Результат ф =". phi):
+
+
+let x = -1;
+let y = 2;
+let leftPart = Math.cos(x) < 1;
+let rightPart = (x + y >= 5);
+let expression = leftPart && rightPart;
+console. log("Перша умова:", leftPart);
+console. log("Друга умова:", rightPart);
+console. log("Результат виразу:", expression);
+if (expression) {
+console. log("true");
+} else{ 
+console. log("false");
+}
