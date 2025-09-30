@@ -1,0 +1,36 @@
+// --- Функція перевірки простого числа ---
+function isPrime(num) {
+  if (typeof num !== "number" || !Number.isInteger(num)) {
+    console.log(`Помилка: аргумент "${num}" не є цілим числом`);
+    return false;
+  }
+  if (num < 2) return false; // Від'ємні числа, 0 і 1 не є простими
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) return false;
+  }
+  return true;
+}
+
+// --- Генерація масиву з 15 випадкових чисел (можуть бути від'ємні) ---
+function generateRandomArray(len = 15, min = -50, max = 100) {
+  return Array.from({ length: len }, () =>
+    Math.floor(Math.random() * (max - min + 1)) + min
+  );
+}
+
+// --- Основна функція ---
+function main() {
+  const arr = generateRandomArray(15, -50, 100); // тепер можливі від'ємні
+  console.log("Згенерований масив:", arr.join(", "));
+
+  const hasPrimes = arr.some(isPrime);
+  if (!hasPrimes) {
+    console.log("У масиві немає простих чисел.");
+    return;
+  }
+
+  const primes = arr.filter(isPrime);
+  console.log("Прості числа з масиву:", primes.join(", "));
+}
+
+main();
