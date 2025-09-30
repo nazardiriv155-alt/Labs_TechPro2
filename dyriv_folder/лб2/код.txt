@@ -1,0 +1,126 @@
+// === Завдання 1: Розрахунок дати Великодня ===
+function validateAndParseYear(input) {
+  if (typeof input === 'string') input = input.trim();
+
+  if (!(typeof input === 'string' || typeof input === 'number')) {
+    console.log('Некоректний тип');
+    return null;
+  }
+
+  const year = (typeof input === 'number') ? input : Number(input);
+
+  if (typeof year !== 'number' || isNaN(year)) {
+    console.log('Некоректне число');
+    return null;
+  }
+  if (!Number.isInteger(year)) {
+    console.log('Рік має бути цілим числом');
+    return null;
+  }
+  if (year < 1583 || year > 9999) {
+    console.log('Некоректний рік (допустимо 1583–9999)');
+    return null;
+  }
+  return year;
+}
+
+function calculateEasterGregorian(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return { year, month, day };
+}
+
+function formatDateEaster(e) {
+  return `${e.year}-${String(e.month).padStart(2,'0')}-${String(e.day).padStart(2,'0')}`;
+}
+
+// === Завдання 2: Генерація матриці ===
+function generateMatrix5x5(min = 0, max = 99) {
+  if (typeof min !== 'number' || typeof max !== 'number' || isNaN(min) || isNaN(max)) {
+    console.log('Некоректний діапазон');
+    return null;
+  }
+  if (!Number.isInteger(min) || !Number.isInteger(max) || min > max) {
+    console.log('Діапазон має бути цілими числами (min <= max)');
+    return null;
+  }
+
+  const n = 5;
+  const matrix = [];
+  for (let i = 0; i < n; i++) {
+    matrix[i] = [];
+    for (let j = 0; j < n; j++) {
+      matrix[i][j] = Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  }
+  return matrix;
+}
+
+// === Завдання 3: Сума побічної діагоналі ===
+function sumSecondaryDiagonal(matrix) {
+  if (!Array.isArray(matrix) || matrix.length !== 5) {
+    console.log('Некоректна матриця');
+    return null;
+  }
+
+  let sum = 0;
+  for (let i = 0; i < 5; i++) {
+    const row = matrix[i];
+    if (!Array.isArray(row) || row.length !== 5) {
+      console.log('Некоректна матриця');
+      return null;
+    }
+    const val = row[5 - 1 - i];
+    if (typeof val !== 'number' || isNaN(val)) {
+      console.log('Елемент не є числом');
+      return null;
+    }
+    sum += val;
+  }
+  return sum;
+}
+
+// === Основний блок ===
+function main() {
+  let rawInput;
+  if (typeof prompt === 'function') {
+    rawInput = prompt('Введіть рік (наприклад, 2025):');
+  } else if (typeof process !== 'undefined' && process.argv && process.argv.length >= 3) {
+    rawInput = process.argv[2];
+  } else {
+    rawInput = '2025'; // демо
+    console.log('Вхід не виявлено, використовую рік:', rawInput);
+  }
+
+  // Завдання 1
+  const year = validateAndParseYear(rawInput);
+  if (year === null) return;
+  const easter = calculateEasterGregorian(year);
+  console.log('Дата Великодня:', formatDateEaster(easter));
+
+  // Завдання 2
+  const matrix = generateMatrix5x5(0, 99);
+  if (matrix === null) return;
+  console.log('Згенерована матриця 5×5:');
+  if (typeof console.table === 'function') console.table(matrix);
+  else console.log(matrix);
+
+  // Завдання 3
+  const sum = sumSecondaryDiagonal(matrix);
+  if (sum === null) return;
+  console.log('Сума елементів побічної діагоналі:', sum);
+}
+
+main();
